@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROSPER N MUVENGWA</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/a2cd313e0a.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="form-box">
+            <h1 id="title">Sign up</h1>
+            <form id="registrationForm">
+                <div class="input-group">
+                    <div class="input-field" id="nameField">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" placeholder="First Name" id="firstName">
+                    </div>
+                    <div class="input-field">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" placeholder="Last Name" id="lastName">
+                    </div>
+                    <div class="input-field">
+                        <i class="fa-solid fa-calendar"></i>
+                        <input type="number" placeholder="Age (18 or above)" min="18" id="ageInput">
+                    </div>
+                    <div class="input-field">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input type="email" placeholder="Email" id="email">
+                    </div>
+                    <div class="input-field">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" placeholder="Password" id="password">
+                    </div>
+                    <p>Lost password <a href="#">Click Here!</a></p>
+                </div>
+                <div class="btn-field">
+                    <button type="button" id="signupBtn">Sign Up</button>
+                    <button type="button" id="signinBtn" class="Disabled">Sign In</button>
+                </div>
+            </form>
+            <div id="userData">
+                <h2>User Data</h2>
+                <table id="userDataTable">
+                    <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Age</th>
+                            <th>Email</th>
+                            <th>Password</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        let signupBtn = document.getElementById("signupBtn");
+        let signinBtn = document.getElementById("signinBtn");
+        let nameField = document.getElementById("nameField");
+        let title = document.getElementById("title");
+        let ageInput = document.getElementById("ageInput");
+        let registrationForm = document.getElementById("registrationForm");
+        let userDataTable = document.getElementById("userDataTable").getElementsByTagName("tbody")[0];
+
+        ageInput.addEventListener("input", function() {
+            if (ageInput.value < 18) {
+                alert("You must be at least 18 years old to access this site.");
+            }
+        });
+
+        registrationForm.addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            const userData = {
+                firstName: document.getElementById("firstName").value,
+                lastName: document.getElementById("lastName").value,
+                age: document.getElementById("ageInput").value,
+                email: document.getElementById("email").value,
+                password: document.getElementById("password").value
+            };
+
+            localStorage.setItem("userData", JSON.stringify(userData));
+            alert("User data saved to local storage.");
+
+            // Display user data in the table
+            let row = userDataTable.insertRow(-1);
+            row.insertCell(0).textContent = userData.firstName;
+            row.insertCell(1).textContent = userData.lastName;
+            row.insertCell(2).textContent = userData.age;
+            row.insertCell(3).textContent = userData.email;
+            row.insertCell(4).textContent = userData.password;
+        });
+
+        signinBtn.onclick = function () {
+            nameField.style.maxHeight = "0";
+            title.innerHTML = "Sign In";
+            signupBtn.classList.add("Disabled");
+            signinBtn.classList.remove("Disabled");
+            alert("You have successfully signed in.");
+        }
+
+        signupBtn.onclick = function () {
+            nameField.style.maxHeight = "60px";
+            title.innerHTML = "Sign Up";
+            signupBtn.classList.remove("Disabled");
+            signinBtn.classList.add("Disabled");
+            registrationForm.dispatchEvent(new Event("submit"));
+        }
+
+        // Load and display user data from local storage on page load
+        window.onload = function() {
+            const storedUserData = JSON.parse(localStorage.getItem("userData"));
+            if (storedUserData) {
+                let row = userDataTable.insertRow(-1);
+                row.insertCell(0).textContent = storedUserData.firstName;
+                row.insertCell(1).textContent = storedUserData.lastName;
+                row.insertCell(2).textContent = storedUserData.age;
+                row.insertCell(3).textContent = storedUserData.email;
+                row.insertCell(4).textContent = storedUserData.password;
+            }
+        }
+    </script>
+</body>
+</html>
+    
+    
+
